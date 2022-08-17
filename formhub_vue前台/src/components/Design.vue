@@ -10,22 +10,18 @@
     </div>
     <el-button
       icon="el-icon-circle-plus"
-      @click="addQuestion"
+      @click="addQuestion(getPreNextUuid(0, detail.questions))"
       style="margin-top: 10px;"
       >添加题目</el-button
     >
-    
-       <el-button
-      icon="el-icon-circle-plus"
-      @click="addQuestion"
-      style="margin-top: 10px;"
-      >添加题目</el-button
-    >
-    
-    <DesignQuestionCard :detail="detail"
-    :isDisplay = "false"
-    :editorQuestion="editorQuestion"
-    :deleteQuestion="deleteQuestion"/>
+    <DesignQuestionCard
+      :detail="detail"
+      :isDisplay="false"
+      :editorQuestion="editorQuestion"
+      :deleteQuestion="deleteQuestion"
+      :addQuestion="addQuestion"
+      :getPreNextUuid="getPreNextUuid"
+    />
     <br /><br /><br /><br /><br />
 
     <!--添加题目弹窗-->
@@ -130,7 +126,7 @@
         <el-button
           type="primary"
           style="margin-left: 10px;"
-          @click="checkAddQuestion"
+          @click="checkAddQuestion()"
           >完成</el-button
         >
       </div>
@@ -147,7 +143,7 @@ import {
   updateO,
   addOptions
 } from "./api";
-import DesignQuestionCard from './DesignQuestionCard.vue'
+import DesignQuestionCard from "./DesignQuestionCard.vue";
 export default {
   components: {
     DesignQuestionCard
@@ -194,6 +190,12 @@ export default {
     };
   },
   methods: {
+    getPreNextUuid(index, arr) {
+      return {
+        prev: index - 1 >= 0 ? arr[index - 1].uuid : "",
+        prev: index + 1 < arr.length ? arr[index + 1].uuid : ""
+      };
+    },
     dialogClose() {
       this.editing = false;
     },
@@ -249,7 +251,7 @@ export default {
       });
     },
     //点击添加问题按钮
-    addQuestion() {
+    addQuestion(uuids) {
       if (this.wjId == 0 || this.wjId == null) {
         this.$message({
           type: "error",
@@ -268,18 +270,20 @@ export default {
           }
         ],
         row: 1,
-        must: false //是否必填
+        must: false, //是否必填
+        prevQuesUuid: uuids.prevQuesUuid,
+        nextQuesUuid: uuids.nextQuesUuid
       };
       this.dialogShow = true;
     },
     //删除问题
-    deleteQuestion(qid, index) {
+    deleteQuestion(qid, index, uuids) {
       this.$confirm("确定删除此题目?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        deleteQ(qid).then(data => {
+        deleteQ(qid, uuids).then(data => {
           if (data.code == 200) {
             this.$message({
               type: "success",
@@ -382,6 +386,11 @@ export default {
         };
         addQuestion(
           {
+            // 前后题目uuid
+            uuids: {
+              prevQuesUuid: this.willAddQuestion.prevQuesUuid,
+              nextQuesUuid: this.willAddQuestion.nextQuesUuid
+            },
             questions: [newItem]
           },
           this.wjId
