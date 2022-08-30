@@ -110,6 +110,7 @@ export const setZero = wid => {
 };
 // 单个问卷
 export const getWenjuan = (data, code = "0") => {
+  debugger;
   let url = "/api/wenjuan/id/" + data.id;
   return axios({
     method: "GET",
@@ -129,12 +130,23 @@ function dataFormat(data) {
   return ret;
 }
 // 添加问题及选项
-import uuid from "../assets/uuidgen";
+import { uuid } from "../assets/uuidgen";
 
 export const addQuestion = (data, wid) => {
   // 当前问题唯一uuid
   data.curQuesUuid = uuid();
+  /*
+  {
+    // 前后题目uuid
+     uuids: {
+        prevQuesUuid: this.willAddQuestion.prevQuesUuid,
+        nextQuesUuid: this.willAddQuestion.nextQuesUuid
+     },
+     questions: [newItem]
+  },
+  */
   let wj = { data: JSON.stringify(data) };
+  debugger;
   return axios({
     method: "PUT",
     url: "/api/wenjuan/id/" + wid,

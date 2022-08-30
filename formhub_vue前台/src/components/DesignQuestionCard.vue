@@ -43,13 +43,13 @@
       <Checkbox :item="item" v-else-if="item.qtype == '2'" />
       <!--填空题展示-->
       <InputText :item="item" v-else-if="item.qtype == '3'" />
-    </el-card>
-    <el-button
+      <el-button
       icon="el-icon-circle-plus"
       @click="() => addQuestion(getPreNextUuid(index, detail.questions))"
       style="margin-top: 10px;"
-      >添加题目</el-button
-    >
+      >添加题目</el-button>
+    </el-card>
+    
   </div>
 </template>
 <script>
@@ -64,8 +64,8 @@ export default {
     InputText
   },
   props: {
-    detail: Object,
-    isDisplay: String,
+    detail: Object | Array,
+    isDisplay: Boolean,
     editorQuestion: Function,
     deleteQuestion: Function,
     addQuestion: Function,

@@ -280,7 +280,6 @@ export default {
       this.loading = true;
       this.detail = [];
       this.wjId = id;
-
       getWenjuan({
         id: this.wjId
       }).then(data => {
@@ -288,7 +287,7 @@ export default {
         this.detail = data.msg.questions;
         let that = this;
         this.wTotalCount = parseInt(this.jsonContent.totalPerson);
-        this.detail.map(function(item, index) {
+        this.detail && this.detail.map(function(item, index) {
           item.options.map(function(item2) {
             item2["percent"] = that.getPercent(
               item2.personCount,
@@ -299,7 +298,6 @@ export default {
 
           return item;
         });
-        console.log(this.detail);
         this.visible = [];
         this.loading = false;
       });

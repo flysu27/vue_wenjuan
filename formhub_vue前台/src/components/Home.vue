@@ -1024,7 +1024,6 @@ export default {
       } else {
         this.isFirst = true;
       }
-
       this.$refs.dataShow.dataAnalysis(id);
     }
   }

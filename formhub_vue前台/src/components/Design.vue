@@ -10,7 +10,7 @@
     </div>
     <el-button
       icon="el-icon-circle-plus"
-      @click="addQuestion(getPreNextUuid(0, detail.questions))"
+      @click="addQuestion(getPreNextUuid(-1, detail.questions))"
       style="margin-top: 10px;"
       >添加题目</el-button
     >
@@ -191,9 +191,10 @@ export default {
   },
   methods: {
     getPreNextUuid(index, arr) {
+      debugger;
       return {
-        prev: index - 1 >= 0 ? arr[index - 1].uuid : "",
-        prev: index + 1 < arr.length ? arr[index + 1].uuid : ""
+        prev: index  >= 0 ? arr[index].uuid : "",
+        next: index+1 <= arr.length - 1 ? arr[index+1].uuid : ""
       };
     },
     dialogClose() {
@@ -204,6 +205,7 @@ export default {
       this.wjId = wjId;
       this.title = title;
       this.desc = desc;
+      debugger;
       this.getQuestionList();
     },
     updateOption(val, id, index) {
@@ -231,6 +233,7 @@ export default {
       });
     },
     //获取问题列表(问卷内容)
+    //后端已经按照uuid链表顺序返回
     getQuestionList() {
       this.detail = [];
       this.loading = true;
@@ -271,8 +274,8 @@ export default {
         ],
         row: 1,
         must: false, //是否必填
-        prevQuesUuid: uuids.prevQuesUuid,
-        nextQuesUuid: uuids.nextQuesUuid
+        prevQuesUuid: uuids.prev,
+        nextQuesUuid: uuids.next
       };
       this.dialogShow = true;
     },

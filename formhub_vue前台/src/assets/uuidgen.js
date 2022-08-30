@@ -1,2 +1,2 @@
-import UUID from "uuid";
-export const uuid = () => UUID.v4().split("-").join("")
+import {v4} from "uuid";
+export const uuid = () => v4().split("-").join("")
