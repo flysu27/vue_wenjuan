@@ -30,7 +30,7 @@
                 deleteQuestion(
                   item.id,
                   index,
-                  getPreNextUuid(index, detail.questions)
+                  getPreNextUuid(index, detail.questions, true)
                 )
             "
             >删除</el-button

@@ -190,8 +190,13 @@ export default {
     };
   },
   methods: {
-    getPreNextUuid(index, arr) {
-      debugger;
+    getPreNextUuid(index, arr, isDel = false) {
+      if(isDel) {
+        return {
+          prev: index-1  >= 0 ? arr[index-1].uuid : "",
+          next: index+1 <= arr.length - 1 ? arr[index+1].uuid : ""
+        };
+      }
       return {
         prev: index  >= 0 ? arr[index].uuid : "",
         next: index+1 <= arr.length - 1 ? arr[index+1].uuid : ""

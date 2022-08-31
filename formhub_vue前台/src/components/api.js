@@ -212,13 +212,14 @@ export const updateQ = (data1, qid) => {
 };
 // 删除问题
 export const deleteQ = (id, uuids) => {
+  debugger;
   return axios({
     method: "delete",
     url: "/api/question/id/" + id,
     headers: {
       "Content-type": "application/x-www-form-urlencoded"
     },
-    data: dataFormat(uuids)
+    data: dataFormat({data: JSON.stringify(uuids)})
     //transformRequest允许在向服务器发送前，修改请求数据
   }).then(res => res.data);
 };
