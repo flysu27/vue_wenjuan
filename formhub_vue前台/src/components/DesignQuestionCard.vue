@@ -19,6 +19,20 @@
           <el-button
             style="padding: 2px"
             type="text"
+            v-if="index-1>=0"
+            @click="moveQuestion(index,index-1)"
+            >上移</el-button
+          >
+          <el-button
+            style="padding: 2px"
+            type="text"
+             v-if="index+1<=detail.questions.length-1"
+            @click="moveQuestion(index,index+1)"
+            >下移</el-button
+          >
+          <el-button
+            style="padding: 2px"
+            type="text"
             @click="editorQuestion(item)"
             >编辑</el-button
           >
@@ -66,6 +80,7 @@ export default {
   props: {
     detail: Object | Array,
     isDisplay: Boolean,
+    moveQuestion: Function,
     editorQuestion: Function,
     deleteQuestion: Function,
     addQuestion: Function,

@@ -21,6 +21,7 @@
       :deleteQuestion="deleteQuestion"
       :addQuestion="addQuestion"
       :getPreNextUuid="getPreNextUuid"
+      :moveQuestion="moveQuestion"
     />
     <br /><br /><br /><br /><br />
 
@@ -141,6 +142,7 @@ import {
   updateQ,
   deleteO,
   updateO,
+  moveQ,
   addOptions
 } from "./api";
 import DesignQuestionCard from "./DesignQuestionCard.vue";
@@ -210,7 +212,7 @@ export default {
       this.wjId = wjId;
       this.title = title;
       this.desc = desc;
-      debugger;
+      
       this.getQuestionList();
     },
     updateOption(val, id, index) {
@@ -283,6 +285,50 @@ export default {
         nextQuesUuid: uuids.next
       };
       this.dialogShow = true;
+    },
+    //移动问题
+    moveQuestion(index, moveToIndex) {
+      
+      const qid = this.detail.questions[index].id;
+      const uuid = this.detail.questions[index].uuid;
+      const moveToUuid = this.detail.questions[moveToIndex].uuid;
+      if(!(uuid && moveToUuid)) {
+        return this.$message('抱歉，此问卷不兼容移动排序功能！目前新建问卷都已支持！');
+      }
+      this.$confirm(`确定移此题目?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+         const uuid_pre = this.detail.questions[index].uuid_pre;
+         const uuid_next = this.detail.questions[index].uuid_next;
+         const uuidInfo = {
+          uuid,
+          uuid_pre,
+          uuid_next
+         }
+         const moveToUuid_pre = this.detail.questions[moveToIndex].uuid_pre;
+         const moveToUuid_next = this.detail.questions[moveToIndex].uuid_next;  
+         const moveToUuidInfo = {
+          moveToUuid,
+          moveToUuid_pre,
+          moveToUuid_next
+         }
+        moveQ(qid, uuidInfo, moveToUuidInfo).then(data => {
+          if (data.code == 200) {
+            this.$message({
+              type: "success",
+              message: "移动问题成功!"
+            });
+            this.getQuestionList();
+          } else {
+            this.$message({
+              type: "error",
+              message: data.msg
+            });
+          }
+        });
+      });
     },
     //删除问题
     deleteQuestion(qid, index, uuids) {

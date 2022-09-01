@@ -110,7 +110,7 @@ export const setZero = wid => {
 };
 // 单个问卷
 export const getWenjuan = (data, code = "0") => {
-  debugger;
+  
   let url = "/api/wenjuan/id/" + data.id;
   return axios({
     method: "GET",
@@ -146,7 +146,7 @@ export const addQuestion = (data, wid) => {
   },
   */
   let wj = { data: JSON.stringify(data) };
-  debugger;
+  
   return axios({
     method: "PUT",
     url: "/api/wenjuan/id/" + wid,
@@ -210,9 +210,22 @@ export const updateQ = (data1, qid) => {
     data: dataFormat(q)
   }).then(res => res.data);
 };
+// 移动问题
+export const moveQ = (qid, uuidInfo, moveToUuidInfo) => {
+  
+  let q = { data: JSON.stringify({uuidInfo, moveToUuidInfo}) };
+  return axios({
+    method: "PUT",
+    url: "/api/question/id/" + qid,
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded"
+    },
+    //transformRequest允许在向服务器发送前，修改请求数据
+    data: dataFormat(q)
+  }).then(res => res.data);
+}
 // 删除问题
 export const deleteQ = (id, uuids) => {
-  debugger;
   return axios({
     method: "delete",
     url: "/api/question/id/" + id,
