@@ -9,6 +9,9 @@
 <script>
 import VoiceRecord from "../../VoiceRecord/VoiceRecord.vue";
 export default {
+    components: {
+        VoiceRecord
+    },
     props: {
         'item': Object
 
