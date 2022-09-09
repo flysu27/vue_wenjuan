@@ -200,7 +200,7 @@ export default {
         };
       }
       return {
-        prev: index > 0 ? arr[index].uuid : "",
+        prev: index  >= 0 ? arr[index].uuid : "",
         next: index+1 <= arr.length - 1 ? arr[index+1].uuid : ""
       };
     },
